@@ -1,0 +1,112 @@
+.table-background {
+	width: 80%;
+	min-width: 1100px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+	background-color: rgba($color-primary_darker, 0.95);
+	border-radius: 10px;
+	padding: 10px 20px;
+
+	.table-container {
+		width: 100%;
+		
+		&__header, &__footer {
+			margin: 4px 0;
+			width: 100%;
+	
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+	
+			.pagination-menu {
+				.dropdown {
+					margin: 0 0.5rem;
+				}
+			}
+	
+			.nav-buttons {
+				.page-link__previous:hover,
+				.page-link__next:hover {
+					cursor: not-allowed;
+				}
+				.page-link__previous:not([disabled]):hover,
+				.page-link__next:not([disabled]):hover,
+				.page-link:hover {
+					cursor: pointer;
+				
+					background: $color-primary_light;
+					border-radius: 2px;
+				}
+			}
+		}
+	
+		.table {
+			width: 100%;
+	
+			border-collapse: collapse;
+	
+			&__head {
+				background-color: $color-primary_dark;
+	
+				th { // Ligne d'en tête du tableau
+					padding: 10px 18px;
+	
+					.element { // Élement d'en tête
+						width: 100%;
+			
+						display: flex;
+						justify-content: space-between;
+						align-items: center;
+	
+						.set-sorting { // Icônes FontAwesome
+							padding: 0;
+							margin: 0;
+							margin-left: 1rem;
+							width: min-content;
+	
+							display: inline-flex;
+							flex-direction: column;
+							
+							color: $color-black;
+						}
+					}
+				}
+			}
+	
+			&__body {
+				border-bottom: 1px solid black;
+				border-top: 1px solid black;
+				tr { // Ligne du tableau
+					background-color: $color-primary;
+				}
+				& tr:not(:first-child) {
+					border-top: 1px solid $color-black;
+				}
+				& tr:nth-child(odd) {
+					background-color: $color-primary_light;
+				}
+	
+				td { // Valeur dans le tableau
+					padding: 8px 10px;
+				}
+				.sorted {
+					backdrop-filter: brightness(0.85);
+				}
+			}
+		}
+		
+		.table-placeholder {
+			padding: 8px 0;
+			width: 100%;
+	
+			border-top: 1px solid $color-black;
+			border-bottom: 1px solid $color-black;
+			background-color: $color-primary;
+			text-align: center;
+		}
+	}
+}
+
