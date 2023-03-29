@@ -1,22 +1,21 @@
-import React, { useState, useRef } from 'react';
-import { /*useStore, */useDispatch } from 'react-redux';
+import React, { useState, useRef, Fragment } from 'react';
+import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import Select from 'react-select';
 import statesDatas from '../../assets/datas/states.js';
 import departmentsDatas from '../../assets/datas/departments.js';
 import { addEmployee } from '../../features/reducer/employeesReducer.js';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import Select from 'react-select';
-//import { ReactModal } from 'react-modal-PVL';
+import Modal from 'pvl-react-modal';
 
 const NewEmployeeForm = () => {
-    //const store = useStore();
     const dispatch = useDispatch();
 
     const form = useRef(null);
-    //const [modalState, setModalState] = useState(false);
 
-    const [birthDate, setBirthDate] = useState(null);
-    const [startDate, setStartDate] = useState(null);
+    const [birthDate, setBirthDate] = useState(new Date("2000.01.01"));
+    const [startDate, setStartDate] = useState(new Date());
     const [selectedState, setSelectedState] = useState(statesDatas[0]);
     const [selectedDepartment, setSelectedDepartment] = useState(departmentsDatas[0]);
 
@@ -35,77 +34,95 @@ const NewEmployeeForm = () => {
         const rawDatas = new FormData(form.current);
         const datas = Object.fromEntries(rawDatas);
 
-        console.log(datas)
         dispatch(addEmployee(datas));
         resetForm(e);
-        //setModalState(true);
+        setOpenModal(true);
+    };
 
-        //localStorage.setItem('reduxState', JSON.stringify(store.getState().counter));
+    const [openModal, setOpenModal] = useState(false);
+    const closeModal = () => {
+        if (openModal) {
+            setOpenModal(false);
+        };
+    };
+    const modalStyle = { // Style settings for Modal
+        backgroundColor: "rgba(0, 0, 0, 0.5)",
+        modalColor: "white",
+        modalWidth: "40%"
     };
 
     return (
-        <div className="form-background">
-            <form id="new-employee-form" ref={form} onSubmit={(e) => handleSubmit(e)}>
-                <label htmlFor="first-name">First Name</label>
-                <input name="firstName" type="text" id="first-name" required />
+        <Fragment>
+            <div className="form-background">
+                <form id="new-employee-form" ref={form} onSubmit={(e) => handleSubmit(e)}>
+                    <label htmlFor="first-name">First Name</label>
+                    <input name="firstName" type="text" id="first-name" required autoFocus />
 
-                <label htmlFor="last-name">Last Name</label>
-                <input name="lastName" type="text" id="last-name" required />
+                    <label htmlFor="last-name">Last Name</label>
+                    <input name="lastName" type="text" id="last-name" required />
 
-                <label htmlFor="date-of-birth">Date of Birth</label>
-                <DatePicker
-                    required
-                    selected={birthDate}
-                    onChange={(date) => setBirthDate(date)}
-                    name="birthDate"
-                    id="date-of-birth"
-                />
-
-                <label htmlFor="start-date">Start Date</label>
-                <DatePicker
-                    required
-                    selected={startDate}
-                    onChange={(date) => setStartDate(date)}
-                    name="startDate"
-                    id="start-date"
-                />
-
-                <fieldset className="address">
-                    <legend>Address</legend>
-
-                    <label htmlFor="street">Street</label>
-                    <input name="street" id="street" type="text" required />
-
-                    <label htmlFor="city">City</label>
-                    <input name="city" id="city" type="text" required />
-
-                    <label htmlFor="state">State</label>
-                    <Select
-                        value={selectedState}
-                        defaultValue={selectedState}
-                        onChange={setSelectedState}
-                        options={statesDatas}
-                        id="states"
-                        name="state"
+                    <label htmlFor="date-of-birth">Date of Birth</label>
+                    <DatePicker
+                        id="date-of-birth"
+                        name="birthDate"
+                        selected={birthDate}
+                        onChange={(date) => setBirthDate(date)}
+                        required
                     />
 
-                    <label htmlFor="zip-code">Zip Code</label>
-                    <input name="zip-code" id="zip-code" type="number" required />
-                </fieldset>
+                    <label htmlFor="start-date">Start Date</label>
+                    <DatePicker
+                        id="start-date"
+                        name="startDate"
+                        selected={startDate}
+                        onChange={(date) => setStartDate(date)}
+                        required
+                    />
 
-                <label htmlFor="department">Department</label>
-                <Select
-                    name="department"
-                    value={selectedDepartment}
-                    defaultValue={selectedDepartment}
-                    onChange={setSelectedDepartment}
-                    options={departmentsDatas}
-                    id="department"
-                />
+                    <fieldset className="address">
+                        <legend>Address</legend>
 
-                <button type="submit">Save</button>
-            </form>
-        </div>
+                        <label htmlFor="street">Street</label>
+                        <input name="street" id="street" type="text" required />
+
+                        <label htmlFor="city">City</label>
+                        <input name="city" id="city" type="text" required />
+
+                        <label htmlFor="state">State</label>
+                        <Select
+                            id="states"
+                            name="state"
+                            value={selectedState}
+                            defaultValue={selectedState}
+                            onChange={setSelectedState}
+                            options={statesDatas}
+                        />
+
+                        <label htmlFor="zip-code">Zip Code</label>
+                        <input name="zip-code" id="zip-code" type="number" required />
+                    </fieldset>
+
+                    <label htmlFor="department">Department</label>
+                    <Select
+                        id="department"
+                        name="department"
+                        value={selectedDepartment}
+                        defaultValue={selectedDepartment}
+                        onChange={setSelectedDepartment}
+                        options={departmentsDatas}
+                    />
+
+                    <button type="submit">Save</button>
+                </form>
+            </div>
+
+            <Modal open={openModal} close={closeModal} customStyle={modalStyle}>
+                <h3>New employee successfully added !</h3>
+                <Link className="nav__link" to="/employees">
+                    <p>View Employees list</p>
+                </Link>
+            </Modal>
+        </Fragment>
     );
 };
 
