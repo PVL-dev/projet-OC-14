@@ -1,16 +1,19 @@
 import React, { useState, useRef, Fragment } from 'react';
 import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { employeesListSelector } from '../../utils/selectors.js';
+import { manageDatas } from '../../utils/manageDatas.js'
 import Select from 'react-select';
 import statesDatas from '../../assets/datas/states.js';
 import departmentsDatas from '../../assets/datas/departments.js';
-import { addEmployee } from '../../features/reducer/employeesReducer.js';
+import { addEmployees } from '../../features/reducer/employeesReducer.js';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import Modal from 'pvl-react-modal';
 
 const NewEmployeeForm = () => {
     const dispatch = useDispatch();
+    const storedEmployees = useSelector(employeesListSelector);
 
     const form = useRef(null);
 
@@ -33,8 +36,9 @@ const NewEmployeeForm = () => {
 
         const rawDatas = new FormData(form.current);
         const datas = Object.fromEntries(rawDatas);
+        const employeesList = manageDatas(datas, storedEmployees);
 
-        dispatch(addEmployee(datas));
+        dispatch(addEmployees(employeesList));
         resetForm(e);
         setOpenModal(true);
     };
@@ -98,8 +102,8 @@ const NewEmployeeForm = () => {
                             options={statesDatas}
                         />
 
-                        <label htmlFor="zip-code">Zip Code</label>
-                        <input name="zip-code" id="zip-code" type="number" required />
+                        <label htmlFor="zipCode">Zip Code</label>
+                        <input name="zipCode" id="zipCode" type="number" required />
                     </fieldset>
 
                     <label htmlFor="department">Department</label>

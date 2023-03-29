@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../assets/img/logo.jpg'
 
-const Header= () => {
+const Header = () => {
     return (
         <header className="header">
             <Link className="logo" to="/home">

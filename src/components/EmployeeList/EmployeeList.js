@@ -11,12 +11,19 @@ import BrowsePages from './utils/BrowsePages';
 import GlobalFilter from './utils/GlobalFilter';
 import SetPagination from './utils/SetPagination';
 import SetSorting from './utils/SetSorting';
-//import './EmployeesTable.css';
 
-const EmployeeList = () => {
-	const employees = useSelector(employeesListSelector);
+const EmployeeList = () => {	
+	let storedEmployees = useSelector(employeesListSelector);
 
-	const data = React.useMemo(() => employees, [employees]);
+	const data = React.useMemo(() => {
+		const localEmployees = JSON.parse(localStorage.getItem("employees"));
+
+		if (storedEmployees.length === 0 && localEmployees) {
+			return localEmployees;
+		} else {
+			return storedEmployees;
+		};
+	}, [storedEmployees]);
 
 	const columns = React.useMemo(() => [
 		{
@@ -74,22 +81,25 @@ const EmployeeList = () => {
 		nextPage,
 		previousPage,
 		setPageSize,
-		state: { pageIndex, pageSize }
+		state: {
+			pageIndex,
+			pageSize
+		}
   	} = useTable(
 		{
-		columns,
-		data,
-		initialState: {
-			pageIndex: 0,
-			pageSize: 10,
-			sortBy: [
-			{
-				id: 'firstName',
-				desc: false,
+			columns,
+			data,
+			initialState: {
+				pageIndex: 0,
+				pageSize: 10,
+				sortBy: [
+					{
+						id: 'firstName',
+						desc: false,
+					},
+				],
 			},
-			],
-		},
-		disableSortRemove: true,
+			disableSortRemove: true,
 		},
 		useGlobalFilter,
 		useSortBy,
