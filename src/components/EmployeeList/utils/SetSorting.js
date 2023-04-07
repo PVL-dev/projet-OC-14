@@ -1,3 +1,6 @@
+import { ReactComponent as ArrowDown } from '../../../assets/icon/sort-down-solid.svg';
+import { ReactComponent as ArrowUp } from '../../../assets/icon/sort-up-solid.svg';
+
 const SetSorting = (props) => {
 	const { direction } = props;
 
@@ -11,8 +14,8 @@ const SetSorting = (props) => {
 				: "set-sorting set-sorting--unsorted"
 			}
 		>
-			<i className="fas fa-sort-up"></i>
-			<i className="fas fa-sort-down"></i>
+			<ArrowUp/>
+			<ArrowDown/>
 		</span>
 	);
 };

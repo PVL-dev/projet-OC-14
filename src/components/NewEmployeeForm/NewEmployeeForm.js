@@ -23,8 +23,8 @@ const NewEmployeeForm = () => {
     const [selectedDepartment, setSelectedDepartment] = useState(departmentsDatas[0]);
 
     const resetForm = (e) => {
-        setBirthDate(null);
-        setStartDate(null);
+        setBirthDate(new Date("2000.01.01"));
+        setStartDate(new Date());
         setSelectedState(statesDatas[0]);
         setSelectedDepartment(departmentsDatas[0]);
 
@@ -100,6 +100,7 @@ const NewEmployeeForm = () => {
                             defaultValue={selectedState}
                             onChange={setSelectedState}
                             options={statesDatas}
+                            menuPlacement="auto"
                         />
 
                         <label htmlFor="zipCode">Zip Code</label>
@@ -114,6 +115,7 @@ const NewEmployeeForm = () => {
                         defaultValue={selectedDepartment}
                         onChange={setSelectedDepartment}
                         options={departmentsDatas}
+                        menuPlacement="auto"
                     />
 
                     <button type="submit">Save</button>

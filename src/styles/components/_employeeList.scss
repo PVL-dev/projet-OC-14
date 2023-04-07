@@ -69,8 +69,11 @@
 	
 							display: inline-flex;
 							flex-direction: column;
-							
-							color: $color-black;
+
+							svg {
+								width: 9px;
+								height: 15px;
+							}
 						}
 					}
 				}
